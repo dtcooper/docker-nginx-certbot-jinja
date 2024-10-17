@@ -25,7 +25,7 @@ jobs:
             platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
           -
             title: Alpine
-            tag: ${{ github.ref_type == 'tag' && github.ref_name || 'latest-alpine' }}
+            tag: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}-alpine
             platforms: linux/amd64,linux/arm64
     steps:
       -
