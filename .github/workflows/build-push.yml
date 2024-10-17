@@ -21,10 +21,10 @@ jobs:
         include:
           -
             title: Debian
-            suffix: ""
+            tag: "latest"
           -
             title: Alpine
-            suffix: "-alpine"
+            tag: "alpine"
     steps:
       -
         name: Checkout
@@ -50,6 +50,6 @@ jobs:
           push: true
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
           build-args: |
-            DOCKER_NGINX_CERTBOT_TAG=latest${{ matrix.suffix }}
+            DOCKER_NGINX_CERTBOT_TAG=${{ matrix.tag }}
           tags: |
             ghcr.io/${{ github.actor }}/nginx-certbot-jinja:latest
