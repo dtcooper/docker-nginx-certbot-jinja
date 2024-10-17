@@ -21,10 +21,10 @@ jobs:
         include:
           -
             title: Debian
-            tag: "latest"
+            tag: "5.4.0-nginx1.27.2"
           -
             title: Alpine
-            tag: "alpine"
+            tag: "5.4.0-nginx1.27.2-alpine"
     steps:
       -
         name: Checkout
