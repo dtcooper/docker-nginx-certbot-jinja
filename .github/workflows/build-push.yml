@@ -15,15 +15,15 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build ${{ matrix.title }}
+    name: Build ${{ matrix.title }} image
     strategy:
       matrix:
         include:
           -
-            title: latest
+            title: Debian
             suffix: ""
           -
-            title: alpine
+            title: Alpine
             suffix: "-alpine"
     steps:
       -
@@ -48,5 +48,8 @@ jobs:
         with:
           #push: ${{ github.ref_type == 'tag' && 'true' || 'false' }}
           push: true
+          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
+          build-args: |
+            DOCKER_NGINX_CERTBOT_TAG=latest${{ matrix.suffix }}
           tags: |
-            ghcr.io/${{ github.actor }}/nginx-certbot:latest
+            ghcr.io/${{ github.actor }}/nginx-certbot-jinja:latest

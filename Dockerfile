@@ -1,5 +1,5 @@
 ARG DOCKER_NGINX_CERTBOT_TAG=latest
-FROM "jonasal/nginx-certbot:latest" AS final
+FROM "jonasal/nginx-certbot:${DOCKER_NGINX_CERTBOT_TAG}"
 
 ARG PIP_BREAK_SYSTEM_PACKAGES=1
 ARG JINJANATOR_VERSION=24.4.0
@@ -8,4 +8,4 @@ ARG JINJANATOR_VERSION=24.4.0
 RUN sed -i 's/\$remote_addr/$host \0/' /etc/nginx/nginx.conf \
     && pip install --no-cache-dir "jinjanator==${JINJANATOR_VERSION}"
 
-COPY 25-jinja2-on-templates.sh /docker-entrypoint.d/
+COPY 25-jinja-on-templates.sh /docker-entrypoint.d/
