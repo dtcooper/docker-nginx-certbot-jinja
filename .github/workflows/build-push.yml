@@ -22,9 +22,11 @@ jobs:
           -
             title: Debian
             tag: "5.4.0-nginx1.27.2"
+            platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
           -
             title: Alpine
             tag: "5.4.0-nginx1.27.2-alpine"
+            platforms: linux/amd64,linux/arm64
     steps:
       -
         name: Checkout
@@ -48,7 +50,7 @@ jobs:
         with:
           #push: ${{ github.ref_type == 'tag' && 'true' || 'false' }}
           push: true
-          platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
+          platforms: ${{ matrix.platforms }}
           build-args: |
             DOCKER_NGINX_CERTBOT_TAG=${{ matrix.tag }}
           tags: |
