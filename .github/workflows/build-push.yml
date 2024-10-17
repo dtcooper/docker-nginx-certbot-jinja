@@ -21,11 +21,11 @@ jobs:
         include:
           -
             title: Debian
-            tag: "5.4.0-nginx1.27.2"
+            tag: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
             platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
           -
             title: Alpine
-            tag: "5.4.0-nginx1.27.2-alpine"
+            tag: ${{ github.ref_type == 'tag' && github.ref_name || 'latest-alpine' }}
             platforms: linux/amd64,linux/arm64
     steps:
       -
@@ -48,10 +48,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v6
         with:
-          #push: ${{ github.ref_type == 'tag' && 'true' || 'false' }}
-          push: true
+          pull: true
+          push: ${{ github.ref_type == 'tag' && 'true' || 'false' }}
           platforms: ${{ matrix.platforms }}
-          build-args: |
-            DOCKER_NGINX_CERTBOT_TAG=${{ matrix.tag }}
-          tags: |
-            ghcr.io/${{ github.actor }}/nginx-certbot-jinja:latest
+          build-args: DOCKER_NGINX_CERTBOT_TAG=${{ matrix.tag }}
+          tags: ghcr.io/${{ github.actor }}/nginx-certbot-jinja:${{ matrix.tag }}
