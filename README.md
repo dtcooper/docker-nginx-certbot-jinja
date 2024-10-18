@@ -7,6 +7,17 @@ Docker image that adds [Jinja](https://jinja.palletsprojects.com/) templating.
 
 ## Usage
 
+Follow all instructions in [`nginx-certbot`](https://github.com/JonasAlfredsson/docker-nginx-certbot)'s
+README, with the following changes below.
+
+Use the following image instead of `jonasal/nginx-certbot`,
+
+* Image name: <code>ghcr.io/dtcooper/nginx-certbot-jinja:**&lt;tag&gt;**</code>
+  * Where the latest tags
+    [can be found here](https://github.com/dtcooper/docker-nginx-certbot-jinja/pkgs/container/nginx-certbot-jinja),
+    and are based directly off the latest versioned `nginx-certbot` tags.
+
+
 By default, reads Jinja template files in `/etc/nginx/templates/*.jinja` and
 outputs the result of executing [`jinjanator`](https://github.com/kpfleming/jinjanator)
 to `/etc/nginx/conf.d`
