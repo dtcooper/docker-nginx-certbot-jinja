@@ -11,10 +11,10 @@ entrypoint_log() {
 }
 
 # Adapted from 20-envsubst-on-templates.sh
-auto_j2() {
-  local template_dir="${NGINX_J2_TEMPLATE_DIR:-/etc/nginx/templates}"
-  local suffix="${NGINX_J2_TEMPLATE_SUFFIX:-.j2}"
-  local output_dir="${NGINX_J2_OUTPUT_DIR:-/etc/nginx/conf.d}"
+auto_jinja() {
+  local template_dir="${NGINX_JINJA_TEMPLATE_DIR:-/etc/nginx/templates}"
+  local suffix="${NGINX_JINJA_TEMPLATE_SUFFIX:-.jinja}"
+  local output_dir="${NGINX_JINJA_OUTPUT_DIR:-/etc/nginx/conf.d}"
 
   local template relative_path output_path subdir
   [ -d "$template_dir" ] || return 0
@@ -32,4 +32,4 @@ auto_j2() {
   done
 }
 
-auto_j2
+auto_jinja
