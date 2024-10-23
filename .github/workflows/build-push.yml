@@ -1,4 +1,4 @@
-name: Build image
+name: Build and push image
 
 on:
   push:
@@ -45,7 +45,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: Build and push
+        name: Build ${{ github.ref_type == 'tag' && 'and push' || 'only' }}
         uses: docker/build-push-action@v6
         with:
           pull: true
