@@ -7,6 +7,12 @@ on:
     tags:
       - '*'
   workflow_dispatch:
+    inputs:
+      is-latest:
+        description: 'Tag as latest'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: build-push-${{ github.ref_type }}-${{ github.ref_name }}
@@ -22,10 +28,12 @@ jobs:
           -
             title: Debian
             tag: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
+            append-latest-tag: ${{ inputs.is-latest && ',ghcr.io/dtcooper/nginx-certbot-jinja:latest' || '' }}
             platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
           -
             title: Alpine
             tag: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}-alpine
+            append-latest-tag: ${{ inputs.is-latest && ',ghcr.io/dtcooper/nginx-certbot-jinja:latest-alpine' || '' }}
             platforms: linux/amd64,linux/arm64
     steps:
       -
@@ -52,4 +60,4 @@ jobs:
           push: ${{ github.ref_type == 'tag' && 'true' || 'false' }}
           platforms: ${{ matrix.platforms }}
           build-args: DOCKER_NGINX_CERTBOT_TAG=${{ matrix.tag }}
-          tags: ghcr.io/dtcooper/nginx-certbot-jinja:${{ matrix.tag }}
+          tags: ghcr.io/dtcooper/nginx-certbot-jinja:${{ matrix.tag }}${{ matrix.append-latest-tag }}
