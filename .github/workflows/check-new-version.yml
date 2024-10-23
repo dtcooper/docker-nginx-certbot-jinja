@@ -1,0 +1,31 @@
+name: Check for new versions
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: build-push-${{ github.ref_type }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Check new versions
+    steps:
+      -
+        name: Check upstream version
+        shell: bash
+        run: |
+          LATEST_VERSION="$(curl -sL https://hub.docker.com/v2/repositories/jonasal/nginx-certbot/tags?page_size=100 \
+            | jq -r '.results[].name' \
+            | grep nginx \
+            | grep -v 'latest\|alpine' \
+            | sort -V \
+            | tail -n 1)"
+          echo "Latest upstream version $LATEST_VERSION"
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Debug
+        uses: mxschmitt/action-tmate@v3
