@@ -1,6 +1,9 @@
 name: Check for new versions
 
 on:
+  push:  # XXX
+    branches:
+      - '*'
   workflow_dispatch:
 
 jobs:
@@ -30,7 +33,7 @@ jobs:
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git tag "${LATEST_UPSTREAM_VERSION}"
-            git push --tags
+            echo "Would run: git push --tags"
           else
             echo 'No new version upstream. Not tagging.'
           fi
