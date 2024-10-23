@@ -13,19 +13,27 @@ jobs:
     name: Check new versions
     steps:
       -
-        name: Check upstream version
-        shell: bash
-        run: |
-          LATEST_VERSION="$(curl -sL https://hub.docker.com/v2/repositories/jonasal/nginx-certbot/tags?page_size=100 \
-            | jq -r '.results[].name' \
-            | grep nginx \
-            | grep -v 'latest\|alpine' \
-            | sort -V \
-            | tail -n 1)"
-          echo "Latest upstream version $LATEST_VERSION"
-      -
         name: Checkout
         uses: actions/checkout@v4
       -
-        name: Debug
-        uses: mxschmitt/action-tmate@v3
+        name: Check upstream version
+        shell: bash
+        run: |
+          GHCR_TOKEN="$(echo ${{ secrets.GITHUB_TOKEN }} | base64)"
+          LATEST_VERSION="$(curl -sLH "Authorization: Bearer ${GHCR_TOKEN}" https://ghcr.io/v2/dtcooper/nginx-certbot-jinja/tags/list \
+            | jq -r .tags[] | grep -v alpine | sort -V | tail -n 1)"
+          LATEST_UPSTREAM_VERSION="$(curl -sL https://hub.docker.com/v2/repositories/jonasal/nginx-certbot/tags?page_size=100 \
+          | jq -r '.results[].name' | grep nginx | grep -v 'latest\|alpine' | sort -V | tail -n 1)"
+
+          echo "         Latest version: ${LATEST_VERSION}"
+          echo "Latest upstream version: ${LATEST_UPSTREAM_VERSION}"
+          echo
+
+          if [ "${LATEST_VERSION}" != "${LATEST_UPSTREAM_VERSION}" ]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git tag "${LATEST_UPSTREAM_VERSION}"
+            git push --tags
+          else
+            echo 'No no version upstream. Not tagging.'
+          fi
