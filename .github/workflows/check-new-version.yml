@@ -33,6 +33,7 @@ jobs:
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git tag "${LATEST_UPSTREAM_VERSION}"
             git push --tags
+            gh workflow run build-push.yml --ref "${LATEST_UPSTREAM_VERSION}"
           else
             echo 'No new version upstream. Not tagging.'
           fi
