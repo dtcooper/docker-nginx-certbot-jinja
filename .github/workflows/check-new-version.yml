@@ -3,10 +3,6 @@ name: Check for new versions
 on:
   workflow_dispatch:
 
-concurrency:
-  group: build-push-${{ github.ref_type }}-${{ github.ref_name }}
-  cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,10 +26,11 @@ jobs:
           echo
 
           if [ "${LATEST_VERSION}" != "${LATEST_UPSTREAM_VERSION}" ]; then
+            echo "New version detected (${LATEST_UPSTREAM_VERSION}). Tagging."
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git tag "${LATEST_UPSTREAM_VERSION}"
             git push --tags
           else
-            echo 'No no version upstream. Not tagging.'
+            echo 'No new version upstream. Not tagging.'
           fi
