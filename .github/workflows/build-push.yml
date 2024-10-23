@@ -42,7 +42,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: dtcooper
           password: ${{ secrets.GITHUB_TOKEN }}
       -
         name: Build ${{ github.ref_type == 'tag' && 'and push' || 'only' }}
@@ -52,4 +52,4 @@ jobs:
           push: ${{ github.ref_type == 'tag' && 'true' || 'false' }}
           platforms: ${{ matrix.platforms }}
           build-args: DOCKER_NGINX_CERTBOT_TAG=${{ matrix.tag }}
-          tags: ghcr.io/${{ github.actor }}/nginx-certbot-jinja:${{ matrix.tag }}
+          tags: ghcr.io/dtcooper/nginx-certbot-jinja:${{ matrix.tag }}
