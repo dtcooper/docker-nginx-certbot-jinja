@@ -28,12 +28,12 @@ jobs:
           -
             title: Debian
             tag: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
-            append-latest-tag: ${{ inputs.is-latest && ',ghcr.io/dtcooper/nginx-certbot-jinja:latest' || '' }}
+            append-latest-tag: ${{ inputs.is-latest && github.ref_type == 'tag' && ',ghcr.io/dtcooper/nginx-certbot-jinja:latest' || '' }}
             platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
           -
             title: Alpine
             tag: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}-alpine
-            append-latest-tag: ${{ inputs.is-latest && ',ghcr.io/dtcooper/nginx-certbot-jinja:latest-alpine' || '' }}
+            append-latest-tag: ${{ inputs.is-latest && github.ref_type == 'tag' && ',ghcr.io/dtcooper/nginx-certbot-jinja:latest-alpine' || '' }}
             platforms: linux/amd64,linux/arm64
     steps:
       -
