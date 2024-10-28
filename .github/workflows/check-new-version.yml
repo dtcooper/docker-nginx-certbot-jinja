@@ -21,7 +21,7 @@ jobs:
         run: |
           GHCR_TOKEN="$(echo "${GH_TOKEN}" | base64)"
           LATEST_VERSION="$(curl -sLH "Authorization: Bearer ${GHCR_TOKEN}" https://ghcr.io/v2/dtcooper/nginx-certbot-jinja/tags/list \
-            | jq -r .tags[] | grep -v alpine | sort -V | tail -n 1)"
+            | jq -r .tags[] | grep -v 'latest\|alpine' | sort -V | tail -n 1)"
           LATEST_UPSTREAM_VERSION="$(curl -sL https://hub.docker.com/v2/repositories/jonasal/nginx-certbot/tags?page_size=100 \
             | jq -r '.results[].name' | grep nginx | grep -v 'latest\|alpine' | sort -V | tail -n 1)"
 
