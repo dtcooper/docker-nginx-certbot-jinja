@@ -2,7 +2,7 @@ ARG DOCKER_NGINX_CERTBOT_TAG=latest
 FROM "jonasal/nginx-certbot:${DOCKER_NGINX_CERTBOT_TAG}"
 
 ARG PIP_BREAK_SYSTEM_PACKAGES=1
-ARG JINJANATOR_VERSION=25.3.0
+ARG JINJANATOR_VERSION=25.3.1
 
 # Add hostname to nginx logs, add jinjanator
 RUN sed -i 's/\$remote_addr/$host \0/' /etc/nginx/nginx.conf \
